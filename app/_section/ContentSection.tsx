@@ -1,0 +1,21 @@
+"use client";
+
+import { SectionCard } from "@/components/shared/layout/SectionCard";
+import Input from "@/components/shared/input/Input";
+import Switch from "@/components/shared/input/Switch";
+import type { PopoverStudioState } from "../types";
+
+type Props = {
+  state: PopoverStudioState;
+  update: <K extends keyof PopoverStudioState>(key: K, value: PopoverStudioState[K]) => void;
+};
+
+export default function ContentSection({ state, update }: Props) {
+  return (
+    <SectionCard title="Content" subtitle="Text, labels, and visible content structure.">
+      <Input label="Primary action" value={state.primaryAction} onChange={(value) => update("primaryAction", value)} />
+      <Input label="Secondary action" value={state.secondaryAction} onChange={(value) => update("secondaryAction", value)} />
+      <Switch label="Match trigger width" checked={state.sameWidth} onChange={(value) => update("sameWidth", value)} />
+    </SectionCard>
+  );
+}

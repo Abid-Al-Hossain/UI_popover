@@ -24,6 +24,7 @@ import RadiusSection from "./_section/RadiusSection";
 import ShadowSection from "./_section/ShadowSection";
 import TypographySection from "./_section/TypographySection";
 import MotionSection from "./_section/MotionSection";
+import FocusRingSection from "./_section/FocusRingSection";
 import StatesSection from "./_section/StatesSection";
 import AccessibilitySection from "./_section/AccessibilitySection";
 import { SECTIONS, type SectionId, type PopoverStudioState, type StudioPreset } from "./types";
@@ -43,7 +44,7 @@ export default function Page() {
   };
 
   const applyPreset = (preset: StudioPreset) => {
-    setState(preset.state);
+    setState({ ...DEFAULT_POPOVER_STATE, ...(preset.state as Partial<PopoverStudioState>) });
     setActivePresetId(preset.id);
     setPreviewResetKey((value) => value + 1);
   };
@@ -68,7 +69,7 @@ export default function Page() {
       {activeSection === "radius" && <RadiusSection state={state} update={update} />}
       {activeSection === "shadow" && <ShadowSection state={state} update={update} />}
       {activeSection === "typography" && <TypographySection state={state} update={update} />}
-      {activeSection === "motion" && <MotionSection state={state} update={update} />}
+      {activeSection === "transitions" && <MotionSection state={state} update={update} />}{activeSection === "focus-ring" && <FocusRingSection state={state} update={update} />}
       {activeSection === "states" && <StatesSection state={state} update={update} />}
       {activeSection === "accessibility" && <AccessibilitySection state={state} update={update} />}
     </>

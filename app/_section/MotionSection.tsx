@@ -4,6 +4,7 @@ import { SectionCard } from "@/components/shared/layout/SectionCard";
 import { LabeledField } from "@/components/shared/layout/LabeledField";
 import Slider from "@/components/shared/input/Slider";
 import Select from "@/components/shared/input/Select";
+import Switch from "@/components/shared/input/Switch";
 import type { PopoverStudioState } from "../types";
 
 type Props = { state: PopoverStudioState; update: <K extends keyof PopoverStudioState>(key: K, value: PopoverStudioState[K]) => void };
@@ -18,19 +19,27 @@ const EASING_OPTIONS = [
 
 export default function MotionSection({ state, update }: Props) {
   return (
-    <SectionCard title="Transitions" subtitle="Duration and easing for interactive state changes.">
-      <div className="space-y-4">
-        <LabeledField label={`Duration: ${state.transitionDuration}ms`}>
-          <Slider value={state.transitionDuration} min={0} max={1000} step={10} onChange={(v) => update("transitionDuration", v)} />
+    <div className="space-y-4">
+      <SectionCard title="Panel Animation" subtitle="Enter/exit animation duration and reduced motion.">
+        <LabeledField label={`Duration: ${state.duration}ms`}>
+          <Slider value={state.duration} min={0} max={600} step={10} onChange={(v) => update("duration", v)} />
         </LabeledField>
-        <LabeledField label="Easing">
-          <Select
-            value={state.transitionEasing}
-            onChange={(v) => update("transitionEasing", v as PopoverStudioState["transitionEasing"])}
-            options={EASING_OPTIONS}
-          />
-        </LabeledField>
-      </div>
-    </SectionCard>
+        <Switch label="Reduced motion" checked={state.reducedMotion} onChange={(v) => update("reducedMotion", v)} />
+      </SectionCard>
+      <SectionCard title="Transitions" subtitle="Duration and easing for interactive state changes.">
+        <div className="space-y-4">
+          <LabeledField label={`Transition: ${state.transitionDuration}ms`}>
+            <Slider value={state.transitionDuration} min={0} max={1000} step={10} onChange={(v) => update("transitionDuration", v)} />
+          </LabeledField>
+          <LabeledField label="Easing">
+            <Select
+              value={state.transitionEasing}
+              onChange={(v) => update("transitionEasing", v as PopoverStudioState["transitionEasing"])}
+              options={EASING_OPTIONS}
+            />
+          </LabeledField>
+        </div>
+      </SectionCard>
+    </div>
   );
 }

@@ -1,4 +1,4 @@
-export type SectionId = "presets" | "basics" | "trigger" | "content" | "placement" | "arrow" | "behavior" | "overlay" | "sizing" | "colors" | "border" | "radius" | "shadow" | "typography" | "transitions" | "focus-ring" | "states" | "accessibility";
+export type SectionId = "presets" | "basics" | "trigger" | "content" | "placement" | "arrow" | "behavior" | "overlay" | "sizing" | "colors" | "border" | "radius" | "shadow" | "typography" | "transitions" | "focus-ring" | "states" | "disabled" | "accessibility";
 
 export type PopoverStudioState = {
   triggerLabel: string;
@@ -75,12 +75,20 @@ export type PopoverStudioState = {
   muted: string;
   accent: string;
   border: string;
+  actionText: string;
   titleSize: number;
   bodySize: number;
   fontWeight: number;
   animation: "none" | "fade" | "scale-fade" | "slide" | "flip";
   duration: number;
   reducedMotion: boolean;
+  disabled: boolean;
+  disabledOpacity: number;
+  disabledCursor: "not-allowed" | "default" | "pointer";
+  disabledUseCustomColors: boolean;
+  disabledBg: string;
+  disabledText: string;
+  disabledBorder: string;
   previewState: "open" | "closed" | "hover" | "focus" | "collision" | "disabled";
 };
 
@@ -162,6 +170,10 @@ export const SECTIONS: Array<{ id: SectionId; label: string }> = [
   {
     "id": "states",
     "label": "State Preview"
+  },
+  {
+    "id": "disabled",
+    "label": "Disabled"
   },
   {
     "id": "accessibility",

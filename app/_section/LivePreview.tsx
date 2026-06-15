@@ -83,9 +83,9 @@ function panelStyle(state: PopoverStudioState, open: boolean): CSSProperties {
     padding: state.padding,
     gap: state.gap,
     borderRadius: buildRadius(state),
-    border: `${state.borderWidth}px ${state.borderStyle} ${state.border}`,
+    border: `${state.borderWidth}px ${state.borderStyle} ${state.disabled && state.disabledUseCustomColors ? state.disabledBorder : state.border}`,
     boxShadow: `${buildShadow(state)}`,
-    background: state.background,
+    background: state.disabled && state.disabledUseCustomColors ? state.disabledBg : state.background,
     color: state.foreground,
     fontFamily: resolveFont(state),
     fontStyle: state.fontStyle,
@@ -108,7 +108,7 @@ function arrowStyle(state: PopoverStudioState): CSSProperties {
     position: "absolute",
     width: size,
     height: size,
-    background: state.background,
+    background: state.disabled && state.disabledUseCustomColors ? state.disabledBg : state.background,
     borderColor: state.border,
     borderStyle: "solid",
     borderWidth: state.borderWidth,
@@ -180,7 +180,7 @@ export default function LivePreview({ state }: { state: PopoverStudioState }) {
           onClick={() => !disabled && setOpen((value) => !value)}
           className="rounded-xl px-4 py-3 font-bold transition disabled:cursor-not-allowed disabled:opacity-55"
           data-testid="live-preview-trigger"
-          style={{ background: state.accent, color: "#020617" }}
+          style={{ background: state.accent, color: state.actionText }}
         >
           {state.triggerLabel}
         </button>
@@ -201,7 +201,7 @@ export default function LivePreview({ state }: { state: PopoverStudioState }) {
           <p id={state.describedBy} style={{ color: state.muted }}>{state.description}</p>
           <p style={{ fontSize: state.bodySize }}>{state.body}</p>
         </div>
-        <div className="flex gap-2"><button type="button" className="rounded-xl px-4 py-2 text-sm font-bold" style={{ background: state.accent, color: "#020617" }}>{state.primaryAction}</button><button type="button" className="rounded-xl border px-4 py-2 text-sm font-bold" style={{ borderColor: state.border, color: state.foreground }}>{state.secondaryAction}</button></div>
+        <div className="flex gap-2"><button type="button" className="rounded-xl px-4 py-2 text-sm font-bold" style={{ background: state.accent, color: state.actionText }}>{state.primaryAction}</button><button type="button" className="rounded-xl border px-4 py-2 text-sm font-bold" style={{ borderColor: state.border, color: state.foreground }}>{state.secondaryAction}</button></div>
         <p className="text-xs" style={{ color: state.muted }}>side={state.side}, align={state.align}, offset={state.offset}px, escape={String(state.closeOnEscape)}, outside={String(state.closeOnInteractOutside)}, scroll={String(state.closeOnScroll)}</p>
       </section>
       </div>

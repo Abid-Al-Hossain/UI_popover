@@ -16,10 +16,12 @@ export function buildExportPayload(state: PopoverStudioState, fileName = "popove
 
 export function buildReactCode(state: PopoverStudioState) {
   const serializedState = JSON.stringify(state, null, 2);
-
   return `import * as React from "react";
 
 const config = ${serializedState};
+
+function resolveFont(s) { return s.fontBucket === "google" ? '"' + s.googleFontFamily + '", sans-serif' : "inherit"; }
+function buildShadow(s) { if (!s.shadowEnabled) return "none"; var hex = Math.round(s.shadowOpacity * 255).toString(16).padStart(2, "0"); return s.shadowX + "px " + s.shadowY + "px " + s.shadowBlur + "px " + s.shadowSpread + "px " + s.shadowColor + hex; }
 
 // Non-modal popover export: no dialog role, no focus trap, and no inert background.
 // collisionPadding and sticky are design metadata here; no collision engine is bundled.
@@ -85,7 +87,7 @@ function getPanelStyle(settings, open) {
     display: "grid",
     gap: settings.gap,
     borderRadius: settings.radius,
-    border: \`\${settings.borderWidth}px solid \${settings.border}\`,
+    border: \`\${settings.borderWidth}px \${settings.borderStyle} \${settings.disabled && settings.disabledUseCustomColors ? settings.disabledBorder : settings.border}\`,
     boxShadow: \`0 \${Math.round(settings.shadow / 3)}px \${settings.shadow}px rgba(0,0,0,.34)\`,
     background: settings.background,
     color: settings.foreground,
@@ -107,7 +109,7 @@ function getArrowStyle(settings) {
     height: size,
     background: settings.background,
     borderColor: settings.border,
-    borderStyle: "solid",
+    borderStyle: settings.borderStyle,
     borderWidth: settings.borderWidth,
     borderRadius: settings.arrowShape === "rounded" ? Math.max(2, size / 4) : 1,
     clipPath: settings.arrowShape === "notch" ? "polygon(50% 0, 100% 100%, 0 100%)" : undefined,
@@ -191,8 +193,8 @@ export default function PopoverComponent() {
           padding: "12px 16px",
           fontWeight: 700,
           background: config.accent,
-          color: "#020617",
-          cursor: disabled ? "not-allowed" : "pointer",
+          color: state.actionText,
+          cursor: disabled ? state.disabledCursor : "pointer",
           opacity: disabled ? 0.55 : 1,
         }}
       >
@@ -221,7 +223,7 @@ export default function PopoverComponent() {
         </div>
 
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <button type="button" style={{ border: 0, borderRadius: 12, padding: "8px 16px", fontWeight: 700, background: config.accent, color: "#020617" }}>
+          <button type="button" style={{ border: 0, borderRadius: 12, padding: "8px 16px", fontWeight: 700, background: config.accent, color: state.actionText }}>
             {config.primaryAction}
           </button>
           <button type="button" style={{ border: \`1px solid \${config.border}\`, borderRadius: 12, padding: "8px 16px", fontWeight: 700, background: "transparent", color: config.foreground }}>

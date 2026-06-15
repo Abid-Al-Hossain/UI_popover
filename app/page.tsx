@@ -26,6 +26,7 @@ import TypographySection from "./_section/TypographySection";
 import MotionSection from "./_section/MotionSection";
 import FocusRingSection from "./_section/FocusRingSection";
 import StatesSection from "./_section/StatesSection";
+import DisabledSection from "./_section/DisabledSection";
 import AccessibilitySection from "./_section/AccessibilitySection";
 import { SECTIONS, type SectionId, type PopoverStudioState, type StudioPreset } from "./types";
 
@@ -71,7 +72,7 @@ export default function Page() {
       {activeSection === "typography" && <TypographySection state={state} update={update} />}
       {activeSection === "transitions" && <MotionSection state={state} update={update} />}{activeSection === "focus-ring" && <FocusRingSection state={state} update={update} />}
       {activeSection === "states" && <StatesSection state={state} update={update} />}
-      {activeSection === "accessibility" && <AccessibilitySection state={state} update={update} />}
+      {activeSection === "disabled" && <DisabledSection state={state} update={update} />}{activeSection === "accessibility" && <AccessibilitySection state={state} update={update} />}
     </>
   );
 

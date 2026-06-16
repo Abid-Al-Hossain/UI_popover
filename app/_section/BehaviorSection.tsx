@@ -12,10 +12,12 @@ type Props = {
 export default function BehaviorSection({ state, update }: Props) {
   return (
     <SectionCard title="Behavior" subtitle="Dismissal and modality behavior.">
+      <div className="space-y-4">
       <Switch label="Modal behavior" checked={state.modal} onChange={(value) => update("modal", value)} />
       <Switch label="Close on Escape" checked={state.closeOnEscape} onChange={(value) => update("closeOnEscape", value)} />
       <Switch label="Close on outside interaction" checked={state.closeOnInteractOutside} onChange={(value) => update("closeOnInteractOutside", value)} />
       <Switch label="Close on scroll" checked={state.closeOnScroll} onChange={(value) => update("closeOnScroll", value)} />
+    </div>
     </SectionCard>
   );
 }

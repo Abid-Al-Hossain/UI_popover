@@ -13,6 +13,7 @@ type Props = {
 export default function PlacementSection({ state, update }: Props) {
   return (
     <SectionCard title="Placement" subtitle="Side, alignment, offset, and collision behavior.">
+      <div className="space-y-4">
       <Select label="Side" value={state.side} options={[
   "top",
   "right",
@@ -31,6 +32,7 @@ export default function PlacementSection({ state, update }: Props) {
   "always",
   "none"
 ]} onChange={(value) => update("sticky", value)} />
+    </div>
     </SectionCard>
   );
 }

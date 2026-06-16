@@ -14,6 +14,7 @@ type Props = {
 export default function TriggerSection({ state, update }: Props) {
   return (
     <SectionCard title="Trigger" subtitle="Trigger label and open-state model.">
+      <div className="space-y-4">
       <Input label="Trigger label" value={state.triggerLabel} onChange={(value) => update("triggerLabel", value)} />
       <Select label="Open mode" value={state.openMode} options={[
   "uncontrolled",
@@ -21,6 +22,7 @@ export default function TriggerSection({ state, update }: Props) {
   "manual"
 ]} onChange={(value) => update("openMode", value)} />
       <Switch label="Default open" checked={state.defaultOpen} onChange={(value) => update("defaultOpen", value)} />
+    </div>
     </SectionCard>
   );
 }

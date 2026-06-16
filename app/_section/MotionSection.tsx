@@ -21,11 +21,13 @@ export default function MotionSection({ state, update }: Props) {
   return (
     <div className="space-y-4">
       <SectionCard title="Panel Animation" subtitle="Enter/exit animation duration and reduced motion.">
+      <div className="space-y-4">
         <LabeledField label={`Duration: ${state.duration}ms`}>
           <Slider value={state.duration} min={0} max={600} step={10} onChange={(v) => update("duration", v)} />
         </LabeledField>
         <Switch label="Reduced motion" checked={state.reducedMotion} onChange={(v) => update("reducedMotion", v)} />
-      </SectionCard>
+      </div>
+    </SectionCard>
       <SectionCard title="Transitions" subtitle="Duration and easing for interactive state changes.">
         <div className="space-y-4">
           <LabeledField label={`Transition: ${state.transitionDuration}ms`}>

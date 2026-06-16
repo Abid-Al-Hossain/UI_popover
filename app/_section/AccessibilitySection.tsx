@@ -13,6 +13,7 @@ type Props = {
 export default function AccessibilitySection({ state, update }: Props) {
   return (
     <SectionCard title="Accessibility" subtitle="ARIA, labels, language, and semantic guidance.">
+      <div className="space-y-4">
       <Input label="Root id" value={state.id} onChange={(value) => update("id", value)} />
       <Input label="Trigger id" value={state.triggerId} onChange={(value) => update("triggerId", value)} />
       <Input label="Content id" value={state.contentId} onChange={(value) => update("contentId", value)} />
@@ -25,6 +26,7 @@ export default function AccessibilitySection({ state, update }: Props) {
         options={["dialog", "alertdialog", "tooltip", "none"]}
         onChange={(value) => update("role", value as PopoverStudioState["role"])}
       />
+    </div>
     </SectionCard>
   );
 }

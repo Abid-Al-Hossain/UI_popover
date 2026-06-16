@@ -126,6 +126,8 @@ export default function PopoverComponent() {
   const triggerRef = React.useRef(null);
   const rootRef = React.useRef(null);
   const [open, setOpen] = React.useState(() => getInitialOpen(config));
+  const [triggerHovered, setTriggerHovered] = React.useState(false);
+  const [closeHovered, setCloseHovered] = React.useState(false);
   const disabled = config.previewState === "disabled";
 
   React.useEffect(() => {
@@ -187,13 +189,15 @@ export default function PopoverComponent() {
         aria-controls={config.contentId}
         disabled={disabled}
         onClick={() => !disabled && setOpen((value) => !value)}
+        onMouseEnter={() => !disabled && setTriggerHovered(true)}
+        onMouseLeave={() => setTriggerHovered(false)}
         style={{
           border: 0,
           borderRadius: 12,
           padding: "12px 16px",
           fontWeight: 700,
-          background: config.accent,
-          color: state.actionText,
+          background: triggerHovered && !disabled ? config.triggerHoverBg : config.accent,
+          color: triggerHovered && !disabled ? config.triggerHoverText : state.actionText,
           cursor: disabled ? state.disabledCursor : "pointer",
           opacity: disabled ? 0.55 : 1,
         }}
@@ -205,6 +209,8 @@ export default function PopoverComponent() {
         id={config.contentId}
         aria-labelledby={config.labelledBy}
         aria-describedby={config.describedBy}
+        aria-label={config.ariaLabel || undefined}
+        role={config.role === "none" ? undefined : config.role}
         hidden={!open}
         data-side={config.side}
         data-align={config.align}
@@ -212,17 +218,29 @@ export default function PopoverComponent() {
       >
         {config.showArrow ? <span aria-hidden="true" style={getArrowStyle(config)} /> : null}
 
-        <div style={{ display: "grid", gap: 8 }}>
-          <h3 id={config.labelledBy} style={{ margin: 0, fontSize: config.titleSize, fontWeight: config.fontWeight }}>
-            {config.title}
-          </h3>
-          <p id={config.describedBy} style={{ margin: 0, color: config.muted }}>
-            {config.description}
-          </p>
-          <p style={{ margin: 0, fontSize: config.bodySize }}>{config.body}</p>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8, background: config.headerBg, padding: config.headerBg !== "transparent" ? 8 : 0, borderRadius: 12 }}>
+          <div style={{ display: "grid", gap: 8 }}>
+            <h3 id={config.labelledBy} style={{ margin: 0, fontSize: config.titleSize, fontWeight: config.fontWeight, color: config.headerText }}>
+              {config.title}
+            </h3>
+            <p id={config.describedBy} style={{ margin: 0, color: config.muted }}>
+              {config.description}
+            </p>
+            <p style={{ margin: 0, fontSize: config.bodySize }}>{config.body}</p>
+          </div>
+          <button
+            type="button"
+            aria-label="Close"
+            onClick={() => setOpen(false)}
+            onMouseEnter={() => setCloseHovered(true)}
+            onMouseLeave={() => setCloseHovered(false)}
+            style={{ border: 0, borderRadius: 999, padding: "4px 8px", lineHeight: 1, fontSize: 14, flexShrink: 0, background: closeHovered ? config.closeHoverBg : config.closeBg, color: config.closeColor }}
+          >
+            {"\\u00D7"}
+          </button>
         </div>
 
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", background: config.footerBg, borderTop: config.footerBg !== "transparent" || config.footerBorder !== "transparent" ? \`1px solid \${config.footerBorder}\` : undefined, paddingTop: 8 }}>
           <button type="button" style={{ border: 0, borderRadius: 12, padding: "8px 16px", fontWeight: 700, background: config.accent, color: state.actionText }}>
             {config.primaryAction}
           </button>

@@ -90,6 +90,17 @@ export type PopoverStudioState = {
   disabledText: string;
   disabledBorder: string;
   previewState: "open" | "closed" | "hover" | "focus" | "collision" | "disabled";
+  ariaLabel: string;
+  role: "dialog" | "alertdialog" | "tooltip" | "none";
+  triggerHoverBg: string;
+  triggerHoverText: string;
+  closeBg: string;
+  closeColor: string;
+  closeHoverBg: string;
+  headerBg: string;
+  headerText: string;
+  footerBg: string;
+  footerBorder: string;
 };
 
 export type StudioPreset = {

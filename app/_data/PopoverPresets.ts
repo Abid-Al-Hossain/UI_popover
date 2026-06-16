@@ -85,6 +85,17 @@ export const DEFAULT_POPOVER_STATE: PopoverStudioState = {
   "disabledText": "#9ca3af",
   "disabledBorder": "#4b5563",
   "actionText": "#020617",
+  "ariaLabel": "",
+  "role": "dialog",
+  "triggerHoverBg": "#2563eb",
+  "triggerHoverText": "#ffffff",
+  "closeBg": "transparent",
+  "closeColor": "#94a3b8",
+  "closeHoverBg": "rgba(255,255,255,0.1)",
+  "headerBg": "transparent",
+  "headerText": "#f8fafc",
+  "footerBg": "transparent",
+  "footerBorder": "#334155",
 };
 
 export const POPOVER_PRESETS: StudioPreset[] = [

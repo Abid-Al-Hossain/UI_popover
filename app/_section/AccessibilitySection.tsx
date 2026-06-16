@@ -2,6 +2,7 @@
 
 import { SectionCard } from "@/components/shared/layout/SectionCard";
 import Input from "@/components/shared/input/Input";
+import Select from "@/components/shared/input/Select";
 import type { PopoverStudioState } from "../types";
 
 type Props = {
@@ -17,6 +18,13 @@ export default function AccessibilitySection({ state, update }: Props) {
       <Input label="Content id" value={state.contentId} onChange={(value) => update("contentId", value)} />
       <Input label="aria-labelledby" value={state.labelledBy} onChange={(value) => update("labelledBy", value)} />
       <Input label="aria-describedby" value={state.describedBy} onChange={(value) => update("describedBy", value)} />
+      <Input label="aria-label" value={state.ariaLabel} onChange={(value) => update("ariaLabel", value)} />
+      <Select
+        label="Role"
+        value={state.role}
+        options={["dialog", "alertdialog", "tooltip", "none"]}
+        onChange={(value) => update("role", value as PopoverStudioState["role"])}
+      />
     </SectionCard>
   );
 }

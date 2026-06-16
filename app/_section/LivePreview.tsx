@@ -127,6 +127,8 @@ export default function LivePreview({ state }: { state: PopoverStudioState }) {
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const rootRef = useRef<HTMLDivElement | null>(null);
   const [open, setOpen] = useState(() => getInitialOpen(state));
+  const [triggerHovered, setTriggerHovered] = useState(false);
+  const [closeHovered, setCloseHovered] = useState(false);
   const disabled = state.previewState === "disabled";
 
   useEffect(() => {
@@ -178,9 +180,11 @@ export default function LivePreview({ state }: { state: PopoverStudioState }) {
           aria-controls={state.contentId}
           disabled={disabled}
           onClick={() => !disabled && setOpen((value) => !value)}
+          onMouseEnter={() => !disabled && setTriggerHovered(true)}
+          onMouseLeave={() => setTriggerHovered(false)}
           className="rounded-xl px-4 py-3 font-bold transition disabled:cursor-not-allowed disabled:opacity-55"
           data-testid="live-preview-trigger"
-          style={{ background: state.accent, color: state.actionText }}
+          style={{ background: triggerHovered && !disabled ? state.triggerHoverBg : state.accent, color: triggerHovered && !disabled ? state.triggerHoverText : state.actionText }}
         >
           {state.triggerLabel}
         </button>
@@ -188,6 +192,8 @@ export default function LivePreview({ state }: { state: PopoverStudioState }) {
         id={state.contentId}
         aria-labelledby={state.labelledBy}
         aria-describedby={state.describedBy}
+        aria-label={state.ariaLabel || undefined}
+        role={state.role === "none" ? undefined : state.role}
         hidden={!open}
         style={panelStyle(state, open)}
         className="absolute grid"
@@ -196,12 +202,28 @@ export default function LivePreview({ state }: { state: PopoverStudioState }) {
         data-testid="live-preview-panel"
       >
         {state.showArrow && <span aria-hidden="true" style={arrowStyle(state)} />}
-        <div className="grid gap-2">
-          <h3 id={state.labelledBy} style={{ fontSize: state.titleSize, fontWeight: state.fontWeight }}>{state.title}</h3>
-          <p id={state.describedBy} style={{ color: state.muted }}>{state.description}</p>
-          <p style={{ fontSize: state.bodySize }}>{state.body}</p>
+        <div className="flex items-start justify-between gap-2 rounded-xl" style={{ background: state.headerBg, padding: state.headerBg !== "transparent" ? 8 : 0 }}>
+          <div className="grid gap-2">
+            <h3 id={state.labelledBy} style={{ fontSize: state.titleSize, fontWeight: state.fontWeight, color: state.headerText }}>{state.title}</h3>
+            <p id={state.describedBy} style={{ color: state.muted }}>{state.description}</p>
+            <p style={{ fontSize: state.bodySize }}>{state.body}</p>
+          </div>
+          <button
+            type="button"
+            aria-label="Close"
+            onClick={() => setOpen(false)}
+            onMouseEnter={() => setCloseHovered(true)}
+            onMouseLeave={() => setCloseHovered(false)}
+            className="rounded-full px-2 py-1 text-sm leading-none"
+            style={{ background: closeHovered ? state.closeHoverBg : state.closeBg, color: state.closeColor, flexShrink: 0 }}
+          >
+            ×
+          </button>
         </div>
-        <div className="flex gap-2"><button type="button" className="rounded-xl px-4 py-2 text-sm font-bold" style={{ background: state.accent, color: state.actionText }}>{state.primaryAction}</button><button type="button" className="rounded-xl border px-4 py-2 text-sm font-bold" style={{ borderColor: state.border, color: state.foreground }}>{state.secondaryAction}</button></div>
+        <div className="flex gap-2 rounded-xl" style={{ background: state.footerBg, borderTop: state.footerBg !== "transparent" || state.footerBorder !== "transparent" ? `1px solid ${state.footerBorder}` : undefined, paddingTop: 8 }}>
+          <button type="button" className="rounded-xl px-4 py-2 text-sm font-bold" style={{ background: state.accent, color: state.actionText }}>{state.primaryAction}</button>
+          <button type="button" className="rounded-xl border px-4 py-2 text-sm font-bold" style={{ borderColor: state.border, color: state.foreground }}>{state.secondaryAction}</button>
+        </div>
         <p className="text-xs" style={{ color: state.muted }}>side={state.side}, align={state.align}, offset={state.offset}px, escape={String(state.closeOnEscape)}, outside={String(state.closeOnInteractOutside)}, scroll={String(state.closeOnScroll)}</p>
       </section>
       </div>

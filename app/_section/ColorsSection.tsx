@@ -18,6 +18,21 @@ export default function ColorsSection({ state, update }: Props) {
       <SectionCard title="Action" subtitle="Primary button and call-to-action text.">
         <ColorControl label="Action text" value={state.actionText} onChange={(v) => update("actionText", v)} />
       </SectionCard>
+      <SectionCard title="Trigger Hover" subtitle="Trigger button colors on hover.">
+        <ColorControl label="Hover background" value={state.triggerHoverBg} onChange={(v) => update("triggerHoverBg", v)} />
+        <ColorControl label="Hover text" value={state.triggerHoverText} onChange={(v) => update("triggerHoverText", v)} />
+      </SectionCard>
+      <SectionCard title="Close Button" subtitle="Dismiss button in the popover header.">
+        <ColorControl label="Background" value={state.closeBg} onChange={(v) => update("closeBg", v)} />
+        <ColorControl label="Icon color" value={state.closeColor} onChange={(v) => update("closeColor", v)} />
+        <ColorControl label="Hover background" value={state.closeHoverBg} onChange={(v) => update("closeHoverBg", v)} />
+      </SectionCard>
+      <SectionCard title="Header & Footer" subtitle="Popover header and footer region colors.">
+        <ColorControl label="Header background" value={state.headerBg} onChange={(v) => update("headerBg", v)} />
+        <ColorControl label="Header text" value={state.headerText} onChange={(v) => update("headerText", v)} />
+        <ColorControl label="Footer background" value={state.footerBg} onChange={(v) => update("footerBg", v)} />
+        <ColorControl label="Footer border" value={state.footerBorder} onChange={(v) => update("footerBorder", v)} />
+      </SectionCard>
     </div>
   );
 }

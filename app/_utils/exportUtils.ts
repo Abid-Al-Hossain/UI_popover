@@ -1,4 +1,5 @@
 import type { PopoverStudioState } from "../types";
+import { ensureReadable, solidBg } from "@/components/shared/color/wcag";
 
 export type ExportPayload = {
   fileName: string;
@@ -14,7 +15,19 @@ export function buildExportPayload(state: PopoverStudioState, fileName = "popove
   };
 }
 
-export function buildReactCode(state: PopoverStudioState) {
+// Keep exported text WCAG-readable, matching the live preview's enforcement.
+function enforceContrast(s: PopoverStudioState): PopoverStudioState {
+  return {
+    ...s,
+    headerText: ensureReadable(s.headerText, solidBg(s.headerBg, s.background)),
+    actionText: ensureReadable(s.actionText, solidBg(s.accent, s.background)),
+    foreground: ensureReadable(s.foreground, solidBg(s.footerBg, s.background)),
+    closeColor: ensureReadable(s.closeColor, solidBg(s.closeBg, s.background)),
+  };
+}
+
+export function buildReactCode(stateInput: PopoverStudioState) {
+  const state = enforceContrast(stateInput);
   const serializedState = JSON.stringify(state, null, 2);
   return `import * as React from "react";
 

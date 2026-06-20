@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { PopoverStudioState } from "../types";
 import { SYSTEM_FONTS } from "@/components/shared/typography/fontConstants";
+import { ensureReadable, solidBg } from "@/components/shared/color/wcag";
 
 function resolveFont(state: { fontBucket: "system" | "google"; googleFontFamily: string; systemFontIdx: number }): string {
   return state.fontBucket === "google"
@@ -184,7 +185,7 @@ export default function LivePreview({ state }: { state: PopoverStudioState }) {
           onMouseLeave={() => setTriggerHovered(false)}
           className="rounded-xl px-4 py-3 font-bold transition disabled:cursor-not-allowed disabled:opacity-55"
           data-testid="live-preview-trigger"
-          style={{ background: triggerHovered && !disabled ? state.triggerHoverBg : state.accent, color: triggerHovered && !disabled ? state.triggerHoverText : state.actionText }}
+          style={(() => { const tBg = triggerHovered && !disabled ? state.triggerHoverBg : state.accent; const tFg = triggerHovered && !disabled ? state.triggerHoverText : state.actionText; return { background: tBg, color: ensureReadable(tFg, solidBg(tBg, state.accent)) }; })()}
         >
           {state.triggerLabel}
         </button>
@@ -204,7 +205,7 @@ export default function LivePreview({ state }: { state: PopoverStudioState }) {
         {state.showArrow && <span aria-hidden="true" style={arrowStyle(state)} />}
         <div className="flex items-start justify-between gap-2 rounded-xl" style={{ background: state.headerBg, padding: state.headerBg !== "transparent" ? 8 : 0 }}>
           <div className="grid gap-2">
-            <h3 id={state.labelledBy} style={{ fontSize: state.titleSize, fontWeight: state.fontWeight, color: state.headerText }}>{state.title}</h3>
+            <h3 id={state.labelledBy} style={{ fontSize: state.titleSize, fontWeight: state.fontWeight, color: ensureReadable(state.headerText, solidBg(state.headerBg, state.background)) }}>{state.title}</h3>
             <p id={state.describedBy} style={{ color: state.muted }}>{state.description}</p>
             <p style={{ fontSize: state.bodySize }}>{state.body}</p>
           </div>
@@ -215,14 +216,14 @@ export default function LivePreview({ state }: { state: PopoverStudioState }) {
             onMouseEnter={() => setCloseHovered(true)}
             onMouseLeave={() => setCloseHovered(false)}
             className="rounded-full px-2 py-1 text-sm leading-none"
-            style={{ background: closeHovered ? state.closeHoverBg : state.closeBg, color: state.closeColor, flexShrink: 0 }}
+            style={{ background: closeHovered ? state.closeHoverBg : state.closeBg, color: ensureReadable(state.closeColor, solidBg(closeHovered ? state.closeHoverBg : state.closeBg, state.background)), flexShrink: 0 }}
           >
             ×
           </button>
         </div>
         <div className="flex gap-2 rounded-xl" style={{ background: state.footerBg, borderTop: state.footerBg !== "transparent" || state.footerBorder !== "transparent" ? `1px solid ${state.footerBorder}` : undefined, paddingTop: 8 }}>
-          <button type="button" className="rounded-xl px-4 py-2 text-sm font-bold" style={{ background: state.accent, color: state.actionText }}>{state.primaryAction}</button>
-          <button type="button" className="rounded-xl border px-4 py-2 text-sm font-bold" style={{ borderColor: state.border, color: state.foreground }}>{state.secondaryAction}</button>
+          <button type="button" className="rounded-xl px-4 py-2 text-sm font-bold" style={{ background: state.accent, color: ensureReadable(state.actionText, solidBg(state.accent, state.background)) }}>{state.primaryAction}</button>
+          <button type="button" className="rounded-xl border px-4 py-2 text-sm font-bold" style={{ borderColor: state.border, color: ensureReadable(state.foreground, solidBg(state.footerBg, state.background)) }}>{state.secondaryAction}</button>
         </div>
         <p className="text-xs" style={{ color: state.muted }}>side={state.side}, align={state.align}, offset={state.offset}px, escape={String(state.closeOnEscape)}, outside={String(state.closeOnInteractOutside)}, scroll={String(state.closeOnScroll)}</p>
       </section>
